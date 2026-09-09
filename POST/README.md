@@ -1,7 +1,5 @@
 # Process-Ontological Secure Transport (POST 1.0)
 
-![POST 1.0 Hero Banner](assets/post_engineering_hero.jpg)
-
 [![License: AGPLv3 / Dual](https://img.shields.io/badge/License-AGPLv3%20%2F%20Dual-blue.svg?style=for-the-badge)](LICENSE)
 [![Protocol](https://img.shields.io/badge/Protocol-POST%201.0-emerald.svg?style=for-the-badge)](SPECIFICATION.md)
 [![Handshake](https://img.shields.io/badge/Handshake-0--RTT%20Instant-purple.svg?style=for-the-badge)](DEVELOPER_GUIDE.md)
