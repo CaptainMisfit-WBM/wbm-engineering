@@ -17,7 +17,7 @@ This repository houses open-source engineering implementations, transport middle
 | Project Directory | Domain / Technology | Primary Features & Documentation |
 | :--- | :--- | :--- |
 | ⚡ [**`POST/`**](POST/) | **Transport Security Middleware** | **0-RTT Instant Transmission (0 ms delay)**, >88%–99.49% wire stream compression, Zero CA fees, non-Hermitian self-healing MitM socket collapse. [**Read Specification**](POST/SPECIFICATION.md) \| [**Developer Guide**](POST/DEVELOPER_GUIDE.md) |
-| 🔬 [**`Cold_Fusion/`**](Cold_Fusion/) | **LENR & Magnetohydrodynamics** | Non-Hermitian non-equilibrium resonance simulations, 3D CAD hardware schematics, and hydrodynamic energy extraction. [**Read Overview**](Cold_Fusion/README.md) |
+| 🔬 [**`LENR_Dynamics/`**](LENR_Dynamics/) | **Solid-State LENR & Magnetohydrodynamics** | Non-Hermitian non-equilibrium resonance simulations, 3D CAD hardware schematics, and solid-state energy extraction. [**Read Overview**](LENR_Dynamics/README.md) |
 
 ---
 

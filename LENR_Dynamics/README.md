@@ -1,27 +1,28 @@
-# WBM Research — Cold Fusion & Condensed-Matter Fusion Repository
+# CMOFE Solid-State LENR Dynamics & Magnetohydrodynamics
 
-**Directory**: `/home/captain-misfit/DataStorage/Cold Fusion/`  
-**Authors**: Captain Misfit & Digital Misfit (WBM Research)  
-**Baseline Theory**: Process Ontology & Eigenform Attractor Dynamics  
-
----
-
-## Executive Overview
-
-This package contains the complete mathematical physics blueprint, numerical state-space simulation scripts, formal Z3 SMT proofs, SPICE driver netlists, and physical 3D STL binary CAD geometry for commercial nuclear and condensed-matter fusion systems:
-
-1. **Commercial Condensed-Matter Ontopoietic Fusion Engine (CM-OFE)** (Primary Cold Fusion Reactor)
-2. **Commercial Magneto-Ontopoietic Fusion Reactor (MOF)** (High-Energy Plasma Hybrid Reference)
+**Directory**: `wbm-engineering/LENR_Dynamics/`  
+**Authors**: Ryan Caron (Captain Misfit) & Digital Misfit  
+**Baseline Physics**: Process Ontology, Non-Hermitian Phonon-Resonance & Eigenform Attractor Dynamics  
+**License**: CERN Open Hardware License (CERN-OHL-W) + WBM Commercial License  
 
 ---
 
-## Package File Index
+## 🔬 Executive Overview
+
+This package contains the complete mathematical physics blueprint, numerical state-space simulation scripts, formal Z3 SMT proofs, SPICE driver netlists, and physical 3D STL binary CAD geometry for solid-state Low-Energy Nuclear Reactions (LENR) and non-equilibrium plasma pinch systems:
+
+1. **Commercial Conformal Multiphysics Oscillatory Field Engine (CMOFE)**: Primary solid-state LENR reactor cell and surface plasmon polariton (SPP) drive.
+2. **Commercial Magneto-Ontopoietic Fusion Reactor (MOF)**: High-energy plasma pinch magnetohydrodynamic reference simulation.
+
+---
+
+## 📂 Package File Index
 
 ```
-/home/captain-misfit/DataStorage/Cold Fusion/
-├── README.md                          <- Repository index and physics overview
-├── simulate_cmofe_lenr.py              <- Main CM-OFE Cold Fusion simulation & proof suite
-├── simulate_fusion_mhd.py             <- MOF Tokamak MHD plasma fusion simulation script
+wbm-engineering/LENR_Dynamics/
+├── README.md                          <- Repository index, physics overview, and licensing
+├── simulate_cmofe_lenr.py              <- Main CMOFE solid-state LENR simulation & proof suite
+├── simulate_fusion_mhd.py             <- MOF Tokamak MHD plasma pinch simulation script
 ├── implementation_plan.md             <- Engineering design specification & governing equations
 ├── walkthrough.md                     <- Empirical simulation output & verification metrics
 └── cad/
@@ -32,7 +33,7 @@ This package contains the complete mathematical physics blueprint, numerical sta
 
 ---
 
-## Key Performance & Verification Highlights
+## 📊 Key Performance & Verification Highlights
 
 | Component / Parameter | Target Value | Empirical Result | Verification Method |
 | :--- | :--- | :--- | :--- |
@@ -47,14 +48,14 @@ This package contains the complete mathematical physics blueprint, numerical sta
 
 ---
 
-## How to Run & Inspect
+## 🚀 How to Run & Inspect
 
-### Run Cold Fusion Simulation Suite:
+### Run LENR Dynamics Simulation Suite:
 ```bash
-python3 "/home/captain-misfit/DataStorage/Cold Fusion/simulate_cmofe_lenr.py"
+python3 "LENR_Dynamics/simulate_cmofe_lenr.py"
 ```
 
 ### Re-Generate 3D STL CAD Files:
 ```bash
-python3 "/home/captain-misfit/DataStorage/Cold Fusion/cad/generate_cad_stl.py"
+python3 "LENR_Dynamics/cad/generate_cad_stl.py"
 ```
