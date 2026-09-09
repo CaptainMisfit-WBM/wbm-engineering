@@ -16,3 +16,4 @@ database/post_telemetry.sqlite
 venv/
 .venv/
 .DS_Store
+POST_Media/
