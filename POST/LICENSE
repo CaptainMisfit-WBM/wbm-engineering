@@ -1,0 +1,38 @@
+# POST PROTOCOL DUAL-LICENSE & FAIR-SOURCE SPECIFICATION
+
+**Primary License**: GNU Affero General Public License v3.0 (AGPL-3.0)  
+**Commercial & Enterprise License**: WBM Commercial Enterprise License  
+**Copyright**: (c) 2026 Ryan Caron (Captain Misfit) & Digital Misfit  
+
+---
+
+## 1. Our Mission: Democratization & Fair Access
+
+The **POST (Process-Ontological Secure Transport)** protocol was created to democratize internet infrastructure, eliminate artificial Certificate Authority monopolies, and give individuals, small businesses, and open-source creators the power to run ultra-fast, secure, low-cost websites without paying commercial gatekeepers.
+
+---
+
+## 2. Dual-Licensing Terms
+
+### A. Free Open-Source Tier (AGPL-3.0)
+* **Permitted Use**: 100% FREE for individuals, non-profits, open-source developers, researchers, and small community projects.
+* **Reciprocity Requirement**: Under AGPL-3.0, any entity that modifies or incorporates POST into a network service or cloud platform must make their complete derivative source code freely available to the community under AGPL-3.0.
+
+### B. Commercial Enterprise License (WBM Group)
+* **Required For**: Commercial corporations, enterprise cloud providers, or closed-source commercial software vendors seeking to incorporate POST into proprietary products without disclosing source code.
+* **Terms**: Requires a paid commercial license agreement with **WBM Group (Captain Misfit)**.
+
+---
+
+## GNU AFFERO GENERAL PUBLIC LICENSE (AGPLv3 Summary)
+
+Version 3, 19 November 2007
+
+Copyright (C) 2007 Free Software Foundation, Inc. <https://fsf.org/>
+
+Everyone is permitted to copy and distribute verbatim copies of this license document, but changing it is not allowed.
+
+### Preamble
+The GNU Affero General Public License is a free, copyleft license for software and other kinds of works, specifically designed to ensure cooperation with the community in the case of network server software.
+
+For full license terms and commercial licensing inquiries, contact **WBM Group** at `https://wbmpros.com` or `licenses@wbmpros.com`.

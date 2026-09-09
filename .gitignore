@@ -1,0 +1,18 @@
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+
+# Runtime SQLite databases & local logs
+*.sqlite
+*.sqlite3
+*.db
+*.log
+database/post_telemetry.sqlite
+
+# Environments & secrets
+.env
+venv/
+.venv/
+.DS_Store
