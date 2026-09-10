@@ -10,7 +10,7 @@ import pytest
 # Ensure src/ is on Python path
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
-from src.post_crypto import PhaseAttractor, PostCryptoEngine
+from src.post_crypto import PhaseAttractor, PostCryptoEngine, PostHandshakeEngine
 from src.post_proxy import PostClientProxy, PostServerProxy
 from src.telemetry import PostTelemetry
 
@@ -27,6 +27,44 @@ def test_phase_attractor_evolution():
     d2 = p1.compute_digest()
     assert p1.seq == 1
     assert d1 != d2
+
+def test_vector_coherence_continuous_metric():
+    seed = os.urandom(32)
+    p1 = PhaseAttractor(seed=seed)
+    p2 = PhaseAttractor(seed=seed)
+    
+    # Identical state -> Coherence = 1.0
+    c_exact = p1.compute_vector_coherence(p2.state)
+    assert abs(c_exact - 1.0) < 1e-6
+    
+    # Inject slight phase perturbation to p2
+    p2.state[0] *= complex(0.95, 0.05)
+    p2._normalize()
+    
+    # Smooth continuous decay (e.g. 0.95 - 0.99 range)
+    c_decay = p1.compute_vector_coherence(p2.state)
+    assert 0.85 < c_decay < 1.0
+
+def test_x25519_zero_trust_handshake_bootstrap():
+    # Ephemeral peer setup
+    client_hs = PostHandshakeEngine()
+    server_hs = PostHandshakeEngine()
+    
+    # Perform 1-RTT X25519 ECDH key exchange
+    client_seed = client_hs.derive_shared_seed(server_hs.get_public_bytes())
+    server_seed = server_hs.derive_shared_seed(client_hs.get_public_bytes())
+    
+    assert client_seed == server_seed
+    assert len(client_seed) == 32
+    
+    # Bootstrapped 0-RTT Engines
+    tx = PostCryptoEngine(seed=client_seed)
+    rx = PostCryptoEngine(seed=server_seed)
+    
+    payload = b"Zero-Trust Ephemeral Handshake POST Payload"
+    frame = tx.encrypt_frame(payload, stream_id=1, seq_num=0)
+    decrypted, _, _, _ = rx.decrypt_frame(frame)
+    assert decrypted == payload
 
 def test_encrypt_decrypt_roundtrip():
     seed = os.urandom(32)

@@ -1,7 +1,8 @@
 """
 Process-Ontological Secure Transport (POST) Cryptographic Engine
 Implements Hilbert's 6th Problem non-Hermitian phase attractor state evolution,
-0-RTT dynamic key rotation, and phase coherence verification.
+continuous complex vector inner-product phase coherence, 0-RTT dynamic key rotation,
+and X25519 Ephemeral Zero-Trust Seed Bootstrap.
 """
 
 import hmac
@@ -9,15 +10,19 @@ import hashlib
 import os
 import struct
 import math
-from typing import Tuple, Optional
+import zlib
+from typing import Tuple, Optional, Union, List
+
 from cryptography.hazmat.primitives.ciphers.aead import AESGCM
 from cryptography.hazmat.primitives.kdf.hkdf import HKDF
 from cryptography.hazmat.primitives import hashes
+from cryptography.hazmat.primitives.asymmetric import x25519
 
 POST_MAGIC = b"POST"
 POST_VERSION = 1
 HEADER_STRUCT_FMT = ">4sBBHQQ32sI32s"  # 120 bytes header length
 HEADER_SIZE = struct.calcsize(HEADER_STRUCT_FMT)
+FLAG_COMPRESSED = 0x10
 
 class PhaseAttractor:
     """
@@ -90,6 +95,22 @@ class PhaseAttractor:
         )
         return hkdf.derive(digest)
 
+    def compute_vector_coherence(self, remote_state: List[complex]) -> float:
+        """
+        Computes reciprocal phase coherence metric C_AB between local complex state vector
+        and remote state vector using normalized complex inner product |<psi_A | psi_B>|.
+        Returns continuous float in [0.0, 1.0].
+        """
+        if len(remote_state) != len(self.state):
+            return 0.0
+        inner_product = sum(z_a.conjugate() * z_b for z_a, z_b in zip(self.state, remote_state))
+        norm_a = math.sqrt(sum(abs(z)**2 for z in self.state))
+        norm_b = math.sqrt(sum(abs(z)**2 for z in remote_state))
+        if norm_a < 1e-12 or norm_b < 1e-12:
+            return 0.0
+        coherence = abs(inner_product) / (norm_a * norm_b)
+        return max(0.0, min(1.0, coherence))
+
     def check_coherence(self, remote_digest: bytes) -> float:
         """
         Computes reciprocal phase coherence metric C_AB between local state digest and remote digest.
@@ -99,7 +120,7 @@ class PhaseAttractor:
         if local_digest == remote_digest:
             return 1.0
         
-        # Bitwise similarity score approximation for phase coherence
+        # Bitwise similarity score for digest verification
         matching_bits = sum(bin(b1 ^ b2).count('0') for b1, b2 in zip(local_digest, remote_digest))
         total_bits = len(local_digest) * 8
         coherence = (matching_bits / total_bits)
@@ -118,14 +139,35 @@ class PhaseAttractor:
         self._normalize()
 
 
-import zlib
+class PostHandshakeEngine:
+    """
+    Ephemeral X25519 Zero-Trust Public Key Exchange Bootstrap.
+    Allows two untrusted endpoints to securely derive a shared 32-byte PhaseAttractor seed
+    over an insecure channel in a single 1-RTT exchange, transitioning to 0-RTT PSK mode.
+    """
+    def __init__(self):
+        self.private_key = x25519.X25519PrivateKey.generate()
+        self.public_key = self.private_key.public_key()
 
-FLAG_COMPRESSED = 0x10
+    def get_public_bytes(self) -> bytes:
+        return self.public_key.public_bytes_raw()
+
+    def derive_shared_seed(self, peer_public_bytes: bytes) -> bytes:
+        peer_public_key = x25519.X25519PublicKey.from_public_bytes(peer_public_bytes)
+        shared_secret = self.private_key.exchange(peer_public_key)
+        hkdf = HKDF(
+            algorithm=hashes.SHA256(),
+            length=32,
+            salt=b"POST_HANDSHAKE_SALT",
+            info=b"POST_0RTT_SEED_BOOTSTRAP",
+        )
+        return hkdf.derive(shared_secret)
+
 
 class PostCryptoEngine:
     """
     POST Crypto Frame Encapsulator & Decapsulator.
-    Implements 0-RTT hydrodynamic encryption, non-Hermitian phase verification, and zlib payload compression.
+    Implements 0-RTT hydrodynamic encryption, non-Hermitian phase verification, and payload compression.
     """
     def __init__(self, attractor: Optional[PhaseAttractor] = None, seed: Optional[bytes] = None):
         if attractor is not None:
@@ -175,7 +217,7 @@ class PostCryptoEngine:
             POST_MAGIC,
             POST_VERSION,
             flags,
-            0,
+            0,  # reserved
             stream_id,
             seq_num,
             phase_digest,
