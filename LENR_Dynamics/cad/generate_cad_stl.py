@@ -5,8 +5,10 @@ CM-OFE 3D CAD STL MESH GENERATOR (generate_cad_stl.py)
 ================================================================================
 Author: Digital Misfit / Captain Misfit (WBM Research)
 Generates physical 3D STL binary CAD geometry for:
-1. cmofe_reactor_cell.stl (Micro-capillary reaction vessel with cooling jacket)
-2. cmofe_electrode_assembly.stl (2.4 THz SPP excitation electrode housing)
+1. cmofe_reactor_cell.stl (Micro-capillary reaction vessel with dual D2 injector, 
+   He-4 outgassing purge channels, and Skutterudite/PZT solid-state ring mounts)
+2. cmofe_electrode_housing.stl (LT-GaAs Photoconductive Auston Switch THz driver 
+   and 50 Ohm Coplanar Waveguide mount housing)
 ================================================================================
 """
 
@@ -101,26 +103,30 @@ def generate_cylinder_mesh(radius: float, height: float, num_segments: int = 32,
 
 def build_cmofe_reactor_cell_mesh():
     """
-    Builds reaction chamber with outer cooling jacket (R=25mm, H=80mm)
-    and central flange rings (R=35mm, H=10mm).
+    Builds reaction chamber with outer thermoelectric/piezo jacket (R=25mm, H=80mm),
+    central micro-capillary D2/He-4 purge channel flange (R=13mm, H=90mm),
+    and outer mounting rings (R=35mm, H=10mm).
     """
     tris = []
-    # Main outer body
+    # Main outer body (solid-state harvesting jacket)
     tris.extend(generate_cylinder_mesh(radius=25.0, height=80.0, num_segments=48, center_offset=(0,0,0)))
-    # Top flange ring
+    # Central micro-capillary injector & helium desiccation purge channel
+    tris.extend(generate_cylinder_mesh(radius=13.0, height=90.0, num_segments=36, center_offset=(0,0,0)))
+    # Top mounting flange ring
     tris.extend(generate_cylinder_mesh(radius=35.0, height=10.0, num_segments=48, center_offset=(0,0,35.0)))
-    # Bottom flange ring
+    # Bottom mounting flange ring
     tris.extend(generate_cylinder_mesh(radius=35.0, height=10.0, num_segments=48, center_offset=(0,0,-35.0)))
     return tris
 
 def build_cmofe_electrode_housing_mesh():
     """
-    Builds 2.4 THz SPP electrode array mount housing (R=18mm, H=40mm).
+    Builds 2.4 THz LT-GaAs Photoconductive Auston Switch electrode housing (R=18mm, H=40mm)
+    and 50 Ohm Coplanar Waveguide (CPW) optical trigger coupler stem (R=8mm, H=20mm).
     """
     tris = []
     # Base electrode housing
     tris.extend(generate_cylinder_mesh(radius=18.0, height=40.0, num_segments=36, center_offset=(0,0,0)))
-    # Micro-strip coupler stem
+    # Coplanar waveguide micro-strip coupler & optical laser window stem
     tris.extend(generate_cylinder_mesh(radius=8.0, height=20.0, num_segments=24, center_offset=(0,0,25.0)))
     return tris
 
@@ -134,4 +140,4 @@ if __name__ == "__main__":
     write_binary_stl(reactor_stl, "CM-OFE Micro-Capillary Reaction Vessel CAD STL", tris_reactor)
     
     tris_electrode = build_cmofe_electrode_housing_mesh()
-    write_binary_stl(electrode_stl, "CM-OFE 2.4 THz SPP Electrode Housing CAD STL", tris_electrode)
+    write_binary_stl(electrode_stl, "CM-OFE 2.4 THz LT-GaAs Auston Switch Electrode Housing CAD STL", tris_electrode)
